@@ -25,7 +25,7 @@ Admin Dashboard (Real-time Monitoring)
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/rusetiq/dpipe.git
 cd datapipeline
 ```
 
@@ -405,17 +405,6 @@ curl -X POST http://localhost:5000/drop-database \
   -b cookies.txt
 ```
 
-## Contributing
-
-1. Create a feature branch
-2. Make your changes
-3. Test with Docker Compose
-4. Submit a pull request
-
-## License
-
-MIT License - See LICENSE file for details
-
 ## Support
 
 For issues or questions:
@@ -426,5 +415,5 @@ For issues or questions:
 
 ---
 
-**Last Updated**: December 2024  
+**Last Updated**: December 2025  
 **Version**: 1.0.0
