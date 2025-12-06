@@ -104,14 +104,14 @@ This starts:
 
 ### Protected Endpoints (Require Authentication)
 
-|| Endpoint         | Method | Description                                                   |
-|------------------|--------|---------------------------------------------------------------|
-| /admin           | GET    | Admin dashboard                                               |
-| /api/admin-data  | GET    | Returns queue times, transaction log, and DB tables in JSON   |
-| /verify-db       | GET    | Verify database connection and view transaction count         |
-| /clear-data      | POST   | Delete queue logs and transaction logs                        |
-| /drop-database   | POST   | Reset database by dropping and recreating transactions table  |
-| /logout          | GET    | Logout and clear session                                      |
+| Endpoint | Method | Description |
+|----------|--------|---------------|
+| `/admin` | GET | Admin dashboard |
+| `/api/admin-data` | GET | Returns queue times, transaction log, and DB tables in JSON |
+| `/verify-db` | GET | Verify database connection and view transaction count |
+| `/clear-data` | POST | Delete queue logs and transaction logs |
+| `/drop-database` | POST | Reset database by dropping and recreating transactions table |
+| `/logout` | GET | Logout and clear session |
 
 ## Data Files
 
