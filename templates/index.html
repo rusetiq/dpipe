@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transaction Submission</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes dither-animate {
+            0% { background-position: 0px 0px; }
+            100% { background-position: 64px 64px; }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1729 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Dither background effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255,255,255,.03) 0px,
+                    rgba(255,255,255,.03) 1px,
+                    transparent 1px,
+                    transparent 2px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255,255,255,.03) 0px,
+                    rgba(255,255,255,.03) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            animation: dither-animate 8s linear infinite;
+            z-index: 0;
+        }
+
+        /* Animated gradient background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(100, 150, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(150, 100, 255, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, 30px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        .glass-card {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 
+                0 8px 32px 0 rgba(31, 38, 135, 0.37),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 12px 48px 0 rgba(31, 38, 135, 0.5),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            background: linear-gradient(135deg, #a8dadc 0%, #7fb3d5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #b0e0e6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #e0e0e0;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(168, 218, 220, 0.5);
+            box-shadow: 0 0 20px rgba(168, 218, 220, 0.2),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.1);
+        }
+
+        input::placeholder {
+            color: rgba(224, 224, 224, 0.4);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, rgba(168, 218, 220, 0.3) 0%, rgba(127, 179, 213, 0.3) 100%);
+            border: 1.5px solid rgba(168, 218, 220, 0.4);
+            border-radius: 12px;
+            color: #a8dadc;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(168, 218, 220, 0.1);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, rgba(168, 218, 220, 0.5) 0%, rgba(127, 179, 213, 0.5) 100%);
+            border-color: rgba(168, 218, 220, 0.7);
+            box-shadow: 0 6px 25px rgba(168, 218, 220, 0.25);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .message {
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            backdrop-filter: blur(5px);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success {
+            background: rgba(72, 187, 120, 0.15);
+            border: 1.5px solid rgba(72, 187, 120, 0.4);
+            color: #68f6cb;
+        }
+
+        .error {
+            background: rgba(245, 101, 101, 0.15);
+            border: 1.5px solid rgba(245, 101, 101, 0.4);
+            color: #ff6b6b;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-links a {
+            color: #7fb3d5;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: #a8dadc;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <h1>Transaction Portal</h1>
+            
+            {% if success %}
+                <div class="message success">✓ Transaction submitted successfully!</div>
+            {% endif %}
+            
+            {% if error %}
+                <div class="message error">✗ {{ error }}</div>
+            {% endif %}
+            
+            <form method="post">
+                {{ form.hidden_tag() }}
+                
+                <div class="form-group">
+                    <label>Amount</label>
+                    {{ form.amount(type="number", step="0.01", min="0.01", placeholder="0.00") }}
+                </div>
+                
+                <div class="form-group">
+                    <label>Sender</label>
+                    {{ form.sender(placeholder="Enter sender ID") }}
+                </div>
+                
+                <div class="form-group">
+                    <label>Receiver</label>
+                    {{ form.receiver(placeholder="Enter receiver ID") }}
+                </div>
+                
+                <button type="submit">Submit Transaction</button>
+            </form>
+            
+            <div class="footer-links">
+                <a href="{{ url_for('login') }}">Admin Access →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
